@@ -1,8 +1,5 @@
 # Materials RAG (Retrieval-Augmented Generation) System
 
-## Quick Start
-To run the entire project with one command:
-
 ## Overview
 The Materials RAG System is an intelligent conversational AI platform designed specifically for construction materials information retrieval and consultation. It combines advanced language models with a specialized knowledge base to provide accurate, context-aware responses about construction materials, specifications, building codes, and related documentation.
 
