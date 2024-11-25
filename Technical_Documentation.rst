@@ -2,6 +2,108 @@
 Materials RAG System Architecture
 =================================
 
+System Architecture Overview
+--------------------------
+The Materials RAG system follows a modern microservices architecture pattern with clear separation of concerns:
+
+Core Components
+~~~~~~~~~~~~~~
+* **API Layer**: FastAPI-based REST API handling client requests and response streaming
+* **RAG Engine**: LangChain-powered retrieval and generation system
+* **Vector Store**: ChromaDB for efficient document embedding storage
+* **Frontend**: React-based chat interface with real-time updates
+
+Data Flow
+~~~~~~~~
+1. Documents are processed, embedded and stored in ChromaDB
+2. User queries trigger semantic search in vector store
+3. Retrieved context is combined with query in LLM prompt
+4. Responses are streamed back to frontend in real-time
+
+Key Design Principles
+~~~~~~~~~~~~~~~~~~~
+* Loose coupling between components
+* Asynchronous communication
+* Stateless API design
+* Event-driven architecture
+
+LLM Integration Details 
+----------------------
+
+Model Configuration
+~~~~~~~~~~~~~~~~~
+* Using OpenAI's GPT-4 model via LangChain
+* Temperature set to 0.01 for consistent, factual responses
+* Max tokens limited to 1000 for concise answers
+* Streaming enabled for real-time response generation
+
+API Integration
+~~~~~~~~~~~~~
+* Secure API key management via environment variables
+* Automatic retry logic for API failures
+* Rate limiting implementation
+* Error handling and fallback strategies
+
+Context Management
+~~~~~~~~~~~~~~~~
+* Dynamic context window optimization
+* Relevant document chunk selection
+* Chat history incorporation
+* Source attribution tracking
+
+Prompt Engineering Approach
+-------------------------
+
+Base Prompt Structure
+~~~~~~~~~~~~~~~~~~~
+* Clear instruction formatting
+* Context integration guidelines
+* Response format specification
+* Source citation requirements
+
+Prompt Components
+~~~~~~~~~~~~~~~
+1. System context setting
+2. Chat history integration
+3. Retrieved document context
+4. User query
+5. Response formatting instructions
+
+Optimization Techniques
+~~~~~~~~~~~~~~~~~~~~
+* Prompt templating for consistency
+* Dynamic prompt adjustment based on query type
+* Context length optimization
+* Temperature adjustment for different query types
+
+RAG System Design
+---------------
+
+Document Processing Pipeline
+~~~~~~~~~~~~~~~~~~~~~~~~~
+1. Document ingestion and cleaning
+2. Text chunking with optimal overlap
+3. Embedding generation using Sentence Transformers
+4. Vector storage in ChromaDB
+5. Metadata extraction and indexing
+
+Retrieval Strategy
+~~~~~~~~~~~~~~~~
+* Hybrid search combining:
+    - Semantic similarity
+    - Keyword matching
+    - Metadata filtering
+* Top-k retrieval with k=4
+* Context relevance scoring
+* Dynamic context window sizing
+
+Generation Approach
+~~~~~~~~~~~~~~~~~
+* Retrieved context integration
+* Chat history consideration
+* Source document attribution
+* Streaming token generation
+
 System Components
 ----------------
 
