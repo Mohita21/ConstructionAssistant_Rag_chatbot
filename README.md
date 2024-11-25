@@ -25,7 +25,6 @@ The Materials RAG System is an intelligent conversational AI platform designed s
 ### 3. Conversation Management
 - Session-based conversations
 - Conversation history tracking
-- Multi-user support
 - Stateful interactions
 
 ### 4. API Integration
