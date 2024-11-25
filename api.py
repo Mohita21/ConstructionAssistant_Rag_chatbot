@@ -8,6 +8,7 @@ from materials_data import sample_dataset
 from sse_starlette.sse import EventSourceResponse
 import asyncio
 import json
+from fastapi.responses import HTMLResponse
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -92,6 +93,7 @@ class MaterialsAPI:
     def _setup_routes(self):
         """Register all API routes with their respective handlers."""
         self.app.get("/")(self.root)
+        self.app.get("/docs/api", response_class=HTMLResponse)(self.api_documentation)
         self.app.post("/query", response_model=QueryResponse)(self.query_endpoint)
         self.app.post("/prepare-documents")(self.prepare_documents_endpoint)
         self.app.get("/health")(self.health_check)
@@ -261,6 +263,150 @@ class MaterialsAPI:
             "event": event,
             "data": json.dumps(data)
         }
+
+    async def api_documentation(self):
+        """
+        Serve detailed HTML documentation for the API endpoints.
+        
+        Returns:
+            HTMLResponse: Formatted HTML documentation
+        """
+        docs = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Materials RAG API Documentation</title>
+            <style>
+                body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 20px; }
+                .endpoint { margin: 20px 0; padding: 20px; border: 1px solid #ddd; border-radius: 5px; }
+                .method { display: inline-block; padding: 5px 10px; border-radius: 3px; color: white; }
+                .get { background-color: #61affe; }
+                .post { background-color: #49cc90; }
+                pre { background-color: #f5f5f5; padding: 10px; border-radius: 3px; }
+                .description { margin: 10px 0; }
+            </style>
+        </head>
+        <body>
+            <h1>Materials RAG API Documentation</h1>
+            
+            <div class="endpoint">
+                <h2><span class="method post">POST</span> /query</h2>
+                <div class="description">
+                    <p>Process a materials science question and return a detailed answer.</p>
+                    <h4>Request Body:</h4>
+                    <pre>
+{
+    "question": "string",     // The materials science question
+    "init_new_session": bool  // Whether to start a new conversation (default: false)
+}
+                    </pre>
+                    <h4>Response:</h4>
+                    <pre>
+{
+    "answer": "string",       // Detailed answer to the question
+    "sources": ["string"]     // List of source documents used
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method post">POST</span> /query/stream</h2>
+                <div class="description">
+                    <p>Stream the response word by word using Server-Sent Events (SSE).</p>
+                    <h4>Request Body:</h4>
+                    <pre>
+{
+    "question": "string",
+    "init_new_session": bool
+}
+                    </pre>
+                    <h4>Response Events:</h4>
+                    <pre>
+event: message
+data: "chunk of answer text"
+
+event: done
+data: {"finish": true}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method post">POST</span> /create_session</h2>
+                <div class="description">
+                    <p>Create a new chat session for maintaining conversation context.</p>
+                    <h4>Response:</h4>
+                    <pre>
+{
+    "session_id": "string"    // Unique session identifier
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method get">GET</span> /session/{session_id}</h2>
+                <div class="description">
+                    <p>Retrieve conversation history for a specific session.</p>
+                    <h4>Path Parameters:</h4>
+                    <pre>
+session_id: string            // The session ID to retrieve
+                    </pre>
+                    <h4>Response:</h4>
+                    <pre>
+{
+    "history": [
+        {
+            "role": "user",
+            "content": "string"
+        },
+        {
+            "role": "assistant",
+            "content": "string"
+        }
+    ]
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method post">POST</span> /prepare-documents</h2>
+                <div class="description">
+                    <p>Prepare and index new materials documents for the RAG system.</p>
+                    <h4>Request Body:</h4>
+                    <pre>
+{
+    // Materials data in JSON format
+}
+                    </pre>
+                    <h4>Response:</h4>
+                    <pre>
+{
+    "status": "success",
+    "message": "string"
+}
+                    </pre>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <h2><span class="method get">GET</span> /health</h2>
+                <div class="description">
+                    <p>Check the API health status.</p>
+                    <h4>Response:</h4>
+                    <pre>
+{
+    "status": "healthy"
+}
+                    </pre>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        return HTMLResponse(content=docs)
 
 def create_app() -> FastAPI:
     """
