@@ -46,7 +46,6 @@ API Integration
 
 Context Management
 ~~~~~~~~~~~~~~~~
-* Dynamic context window optimization
 * Relevant document chunk selection
 * Chat history incorporation
 * Source attribution tracking
@@ -69,12 +68,6 @@ Prompt Components
 4. User query
 5. Response formatting instructions
 
-Optimization Techniques
-~~~~~~~~~~~~~~~~~~~~
-* Prompt templating for consistency
-* Dynamic prompt adjustment based on query type
-* Context length optimization
-* Temperature adjustment for different query types
 
 RAG System Design
 ---------------
@@ -85,17 +78,11 @@ Document Processing Pipeline
 2. Text chunking with optimal overlap
 3. Embedding generation using Sentence Transformers
 4. Vector storage in ChromaDB
-5. Metadata extraction and indexing
 
 Retrieval Strategy
 ~~~~~~~~~~~~~~~~
-* Hybrid search combining:
-    - Semantic similarity
-    - Keyword matching
-    - Metadata filtering
+* Vector search using all-MiniLM-L6-v2 as the embedding model
 * Top-k retrieval with k=4
-* Context relevance scoring
-* Dynamic context window sizing
 
 Generation Approach
 ~~~~~~~~~~~~~~~~~
@@ -210,22 +197,6 @@ Search and Retrieval
 * Relevance-based document retrieval
 * Context window optimization
 
-Security and Performance
------------------------
-
-Security Measures
-~~~~~~~~~~~~~~~
-* CORS configuration
-* API key management
-* Environment variable protection
-* Input validation using Pydantic
-
-Performance Optimizations
-~~~~~~~~~~~~~~~~~~~~~~~
-* Chunked document processing
-* Efficient vector storage
-* Response streaming
-* Client-side caching
 
 Deployment Architecture
 ----------------------
@@ -243,38 +214,14 @@ Production Setup
 * Vector store persistence in local storage
 * Environment configuration through .env files
 
-System Requirements
------------------
-
-Software Requirements
-~~~~~~~~~~~~~~~~~~~
-* Python 3.8+
-* Node.js 14+
-* npm 6+
-* OpenAI API access
-
-Hardware Requirements
-~~~~~~~~~~~~~~~~~~~
-* Minimum 8GB RAM
-* SSD storage for vector database
-* Modern CPU for embedding generation
-
 Future Considerations
 -------------------
 
-Scalability Options
-~~~~~~~~~~~~~~~~~
-* Distributed vector storage
-* Load balancing
-* Horizontal scaling
-* Caching layer implementation
-
 Potential Enhancements
 ~~~~~~~~~~~~~~~~~~~~
-* Multi-user support
+* Fine-tuning the smaller open source LLM models
 * Advanced authentication
+* Multi-user support
 * Cloud deployment
-* API rate limiting
-* Document version control
-
-This architecture provides a robust foundation for a materials science question-answering system while maintaining flexibility for future enhancements and scalability options. 
+* Prompt Caching
+* LRU cache implementation
