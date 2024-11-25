@@ -1,0 +1,22 @@
+# FastAPI Framework and Server
+fastapi>=0.68.0        # Modern web framework for building APIs
+uvicorn>=0.15.0        # ASGI server implementation
+pydantic>=2.0.0        # Data validation using Python type annotations
+starlette>=0.27.0      # Web framework toolkit, used by FastAPI
+
+# LangChain and AI Components
+langchain>=0.1.0           # Framework for developing LLM applications
+langchain_community>=0.0.10 # Community extensions for LangChain
+langchain-openai>=0.0.2    # OpenAI integration for LangChain
+
+# Vector Store and Embeddings
+chromadb>=0.4.0                # Vector database for storing embeddings
+sentence-transformers>=2.2.0    # Models for text embeddings
+
+# API Utilities and Middleware
+python-multipart>=0.0.5    # Multipart form data parsing
+sse-starlette>=1.0.0      # Server-Sent Events support
+python-dotenv==1.0.0      # Environment variable management
+
+# Production Server
+gunicorn>=20.1.0          # Production-grade WSGI server
